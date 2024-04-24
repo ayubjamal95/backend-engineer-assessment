@@ -1,106 +1,44 @@
-# Getting Started
 
-**IMPORTANT: Do not send pull requests to this repository. This is a template repository and is not used for grading. Any pull requests will be closed and ignored.**
+## Assignment
 
-## Introduction
+### Prerequisite Installation
+- java version "21.0.3"
+- temporal
+- docker
+- Stripe key
 
-If you are reading this, you are probably have received this project as a coding challenge. Please read the instructions
-carefully and follow the steps below to get started.
-
-## Setup
-
-### Pre-requisities
-
-To run the application you would require:
-
-- [Java](https://www.azul.com/downloads/#zulu)
-- [Temporal](https://docs.temporal.io/cli#install)
-- [Docker](https://docs.docker.com/get-docker/)
-- [Stripe API Keys](https://stripe.com/docs/keys)
-
-### On macOS:
-
-First, you need to install Java 21 or later. You can download it from [Azul](https://www.azul.com/downloads/#zulu) or
-use [SDKMAN](https://sdkman.io/).
-
+### Run
+- Locate the docker compose file and run the following command
 ```sh
-brew install --cask zulu21
+sudo docker-compose up -d
 ```
 
-You can install Temporal using Homebrew
-
-```sh
-brew install temporal
-```
-
-or visit [Temporal Installation](https://docs.temporal.io/cli#install) for more information.
-
-You can install Docker using Homebrew
-
-```sh
-brew install docker
-```
-
-or visit [Docker Installation](https://docs.docker.com/get-docker/) for more information.
-
-### Other platforms
-
-Please check the official documentation for the installation of Java, Temporal, and Docker for your platform.
-
-### Stripe API Keys
-
-Sign up for a Stripe account and get your API keys from the [Stripe Dashboard](https://dashboard.stripe.com/apikeys).
-Then in `application.properties` file add the following line with your secret key.
-
-```properties
-stripe.api-key=sk_test_51J3j
-```
-
-## Run
-
-You are required to first start the temporal server using the following command
-
+- locate the temporal.exe file and run the following command
 ```sh
 temporal server start-dev
 ```
-
-and then run the application using the following command or using your IDE.
+- to build the app locate the gradle.build file and run the following command
+```sh
+gradlew build
+```
+- Inside   `<PATH>\build\libs` locate the jar file and run the following command
+```sh
+java -jar app-0.0.1-SNAPSHOT.jar
+```
+- to execute the test case, use following command, the report can be find at: `<PATH>/build/reports/tests/test` execute `index.html`
 
 ```sh
-./gradlew bootRun
+gradlew test
 ```
-
-### Other commands
-
-#### Lint
-To run lint checks, use the following command
-
+- to execute the sonar lint report, use following command, the report can be find at: `<PATH>/build/reports/sonarlint` execute `report.html`
 ```sh
-./gradlew sonarlintMain
+gradlew sonarlintMain
 ```
-
-#### Code Formatting
-To format the code, use the following command
-
+- to format the code, use following command
 ```sh
-./gradlew spotlessApply
+gradlew spotlessApply
 ```
 
-## Guides
-
-The following guides illustrate how to use some features concretely:
-
-- [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-- [Temporal Quick Start](https://docs.temporal.io/docs/quick-start)
-- [Temporal Java SDK Quick Guide](https://docs.temporal.io/dev-guide/java)
-- [Stripe Quick Start](https://stripe.com/docs/quickstart)
-- [Stripe Java SDK](https://stripe.com/docs/api/java)
-
-### Docker Compose support
-
-This project contains a Docker Compose file named `compose.yaml`.
-In this file, the following services have been defined:
-
-- postgres: [`postgres:latest`](https://hub.docker.com/_/postgres)
-
-Please review the tags of the used images and set them to the same as you're running in production.
+#### Limitation
+- the springboot app is not dockerized.
+- the containers created for temporal server via docker compose, available on github was crashing `https://github.com/temporalio/docker-compose/blob/main/docker-compose.yml`, hence prefered to use local setup

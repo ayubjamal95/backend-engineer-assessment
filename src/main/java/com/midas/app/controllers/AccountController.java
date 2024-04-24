@@ -6,7 +6,9 @@ import com.midas.app.services.AccountService;
 import com.midas.generated.api.AccountsApi;
 import com.midas.generated.model.AccountDto;
 import com.midas.generated.model.CreateAccountDto;
+import com.midas.generated.model.UpdateAccountDto;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,15 +32,14 @@ public class AccountController implements AccountsApi {
   @Override
   public ResponseEntity<AccountDto> createUserAccount(CreateAccountDto createAccountDto) {
     logger.info("Creating account for user with email: {}", createAccountDto.getEmail());
-
     var account =
         accountService.createAccount(
             Account.builder()
+                .id(UUID.randomUUID())
                 .firstName(createAccountDto.getFirstName())
                 .lastName(createAccountDto.getLastName())
                 .email(createAccountDto.getEmail())
                 .build());
-
     return new ResponseEntity<>(Mapper.toAccountDto(account), HttpStatus.CREATED);
   }
 
@@ -50,10 +51,24 @@ public class AccountController implements AccountsApi {
   @Override
   public ResponseEntity<List<AccountDto>> getUserAccounts() {
     logger.info("Retrieving all accounts");
-
     var accounts = accountService.getAccounts();
     var accountsDto = accounts.stream().map(Mapper::toAccountDto).toList();
 
     return new ResponseEntity<>(accountsDto, HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<AccountDto> updateUserAccount(
+      UUID accountId, UpdateAccountDto updateAccountDto) {
+    logger.info("Updating account details for accountId {}", accountId);
+    var updatedAccount =
+        accountService.updateAccount(
+            Account.builder()
+                .id(accountId)
+                .firstName(updateAccountDto.getFirstName())
+                .lastName(updateAccountDto.getLastName())
+                .email(updateAccountDto.getEmail())
+                .build());
+    return new ResponseEntity<>(Mapper.toAccountDto(updatedAccount), HttpStatus.OK);
   }
 }

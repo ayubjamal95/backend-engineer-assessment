@@ -35,7 +35,7 @@ dependencies {
 
 
     compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+    //developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
 
@@ -56,13 +56,15 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.12.0'
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'io.gsonfire:gson-fire:1.9.0'
-
     implementation "com.stripe:stripe-java:24.14.0"
+
+
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
+
 
 
 tasks.register('sonarlintListRules', SonarlintListRules) {
@@ -71,11 +73,11 @@ tasks.register('sonarlintListRules', SonarlintListRules) {
 }
 
 sonarlintMain {
-    source = fileTree("$layout.buildDirectory/src/main")
+    source= "${rootDir}/src/main/java"
     reports {
         html {
             enabled = true
-            outputLocation = layout.buildDirectory.file("/reports/sonarlint")
+            outputLocation = layout.buildDirectory.file("/reports/sonarlint/report.html")
         }
         xml.enabled = true
         sarif.enabled = false
